@@ -27,7 +27,7 @@ public class HexMapController : MonoBehaviour
 
     [Header("Hex Grid Properties")]
 
-    [SerializeField] private GameObject hexPrefab;
+
     [SerializeField] private int width = 10;
     [SerializeField] private int height = 10;
 
@@ -46,6 +46,9 @@ public class HexMapController : MonoBehaviour
     [Header("Update Values")]
     [SerializeField] private bool updateHexMapEveryFrame = false;
     [SerializeField] private bool updateCameraEveryFrame = false;
+
+
+    BidirectionalDictionary<Hex, GameObject> hexGameObjectMap = new BidirectionalDictionary<Hex, GameObject>();
 
 
     private void Start()
@@ -79,19 +82,19 @@ public class HexMapController : MonoBehaviour
         {
             for (int i = 0; i < width; i++)
             {
-                GameObject hexGO = Instantiate(
-                    hexPrefab,
-                    new Vector3(
+                Vector3 pos = new Vector3(
                         i * hexDiameter * xScale + ((j % 2 == 1) ? hexDiameter * xScale / 2 : 0),
                         0,
-                        j * hexDiameter * zScale),
-                    Quaternion.identity, this.transform
-                    );
-                hexGO.name = hexPrefab.name + " " + i + " " + j;
+                        j * hexDiameter * zScale);
+                Hex hex = new Hex(pos);
+                GameObject hexGo = HexMapDisplay.Instance.CreateHex(hex, i, j);
+                hexGameObjectMap.Add(hex, hexGo);
             }
         }
     }
 
+
+    // FIXME: This should be on a camera manager, not the hex map controller
     private void RecalculateMainCameraPosition()
     {
         Transform camTrans = Camera.main.transform;
@@ -107,6 +110,5 @@ public class HexMapController : MonoBehaviour
             width * hexDiameter * xScale/ 2 + cameraXOffset, 
             camTrans.position.y,
             height * hexDiameter * zScale/ 2 + cameraZOffset);
-
     }
 }
