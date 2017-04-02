@@ -6,9 +6,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class HexMapController : MonoBehaviour
 {
+
+    private static HexMapController _instance;
+    public static HexMapController Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = GameObject.FindObjectOfType<HexMapController>();
+            return _instance;
+        }
+    }
 
     public int Width
     {
@@ -25,53 +37,62 @@ public class HexMapController : MonoBehaviour
         }
     }
 
+
+
+
     [Header("Hex Grid Properties")]
 
 
-    [SerializeField] private int width = 10;
+    [SerializeField]
+    private int width = 10;
     [SerializeField] private int height = 10;
 
     [Header("Hex Properties")]
 
-    [SerializeField] private float hexDiameter = 2f;
+    [SerializeField]
+    private float hexDiameter = 2f;
     [SerializeField] private float zScale = 0.83f;
     [SerializeField] private float xScale = 0.93f;
 
     [Header("Camera Offset Values")]
 
-    [SerializeField] private float cameraXOffset = 0;
+    [SerializeField]
+    private float cameraXOffset = 0;
     [SerializeField] private float cameraZOffset = -20;
 
-
-    [Header("Update Values")]
-    [SerializeField] private bool updateHexMapEveryFrame = false;
-    [SerializeField] private bool updateCameraEveryFrame = false;
-
-
-    BidirectionalDictionary<Hex, GameObject> hexGameObjectMap = new BidirectionalDictionary<Hex, GameObject>();
+    // DO NOT USE!! THESE WILL CAUSE ERRORS WHILE INTERACTING WITH OTHER SCRIPTS
+    //[Header("Update Values")]
+    //[SerializeField]
+    //private bool updateHexMapEveryFrame = false;
+    //[SerializeField] private bool updateCameraEveryFrame = false;
 
 
-    private void Start()
+    public BidirectionalDictionary<Hex, GameObject> hexGameObjectMap { get; protected set; }
+
+
+    private void Awake()
     {
+        hexGameObjectMap = new BidirectionalDictionary<Hex, GameObject>();
+        // HACK to ensure that this runs before the Resource Controller, which relies on this
         CreateHexGrid();
         RecalculateMainCameraPosition();
     }
 
-    private void Update()
-    {
-        if(updateHexMapEveryFrame)
-        {
-            foreach(Transform child in this.transform)
-            {
-                Destroy(child.gameObject);
-            }
-            CreateHexGrid();
-        }
-        if (updateCameraEveryFrame)
-        {
-            RecalculateMainCameraPosition();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (updateHexMapEveryFrame)
+    //    {
+    //        foreach (Transform child in this.transform)
+    //        {
+    //            Destroy(child.gameObject);
+    //        }
+    //        CreateHexGrid();
+    //    }
+    //    if (updateCameraEveryFrame)
+    //    {
+    //        RecalculateMainCameraPosition();
+    //    }
+    //}
 
     /// <summary>
     /// Creates a grid of hexes based on the values set above
@@ -83,12 +104,13 @@ public class HexMapController : MonoBehaviour
             for (int i = 0; i < width; i++)
             {
                 Vector3 pos = new Vector3(
-                        i * hexDiameter * xScale + ((j % 2 == 1) ? hexDiameter * xScale / 2 : 0),
-                        0,
-                        j * hexDiameter * zScale);
+                     i * hexDiameter * xScale + ((j % 2 == 1) ? hexDiameter * xScale / 2 : 0),
+                     0,
+                     j * hexDiameter * zScale);
                 Hex hex = new Hex(pos);
                 GameObject hexGo = HexMapDisplay.Instance.CreateHex(hex, i, j);
                 hexGameObjectMap.Add(hex, hexGo);
+
             }
         }
     }
@@ -107,8 +129,24 @@ public class HexMapController : MonoBehaviour
         }
 
         camTrans.position = new Vector3(
-            width * hexDiameter * xScale/ 2 + cameraXOffset, 
+            width * hexDiameter * xScale / 2 + cameraXOffset,
             camTrans.position.y,
-            height * hexDiameter * zScale/ 2 + cameraZOffset);
+            height * hexDiameter * zScale / 2 + cameraZOffset);
     }
+
+    #region Utility Methods
+    public GameObject GetGameObjectForHex(Hex hex)
+    {
+        if (hexGameObjectMap.ContainsKey(hex) == false)
+            return null; // ALERT: This does not throw an error
+        return hexGameObjectMap[hex];
+    }
+
+    public Hex GetHexForGameObject(GameObject obj)
+    {
+        if (hexGameObjectMap.ContainsValue(obj) == false)
+            return null; // ALERT: This does not throw an error
+        return hexGameObjectMap[obj];
+    }
+    #endregion
 }
