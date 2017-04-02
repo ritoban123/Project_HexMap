@@ -18,4 +18,4 @@ MonoBehaviour:
     AmountPerMonth: 5
   - Resource: Buffalo
     AmountPerMonth: 12
-  color: {r: 0.9117647, g: 1, b: 0.3602941, a: 0}
+  color: {r: 0.40860283, g: 0.66176474, b: 0.26275954, a: 1}

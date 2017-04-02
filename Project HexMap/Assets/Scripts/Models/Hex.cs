@@ -22,7 +22,7 @@ public class Hex
         {
             hexResourceData = value;
             if (ResourceController.Instance.OnHexResourceTypeChange != null)
-                ResourceController.Instance.OnHexResourceTypeChange(this);
+                ResourceController.Instance.OnHexResourceTypeChange.Invoke(this);
         }
     }
 
@@ -35,5 +35,14 @@ public class Hex
     }
 
 
-
+    public void UpdateResources()
+    {
+        for (int i = 0; i < hexResourceData.HexResourcesPerMonth.Length; i++)
+        {
+            ResourceController.Instance.AddResource(
+                hexResourceData.HexResourcesPerMonth[i].Resource,
+                hexResourceData.HexResourcesPerMonth[i].AmountPerMonth
+                );
+        }
+    }
 }

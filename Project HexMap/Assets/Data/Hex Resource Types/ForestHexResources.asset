@@ -18,4 +18,4 @@ MonoBehaviour:
     AmountPerMonth: 5
   - Resource: Herbs
     AmountPerMonth: 12
-  color: {r: 0.26612568, g: 0.20588237, b: 1, a: 1}
+  color: {r: 0.061634954, g: 0.41911763, b: 0.22681662, a: 1}

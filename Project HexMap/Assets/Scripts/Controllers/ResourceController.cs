@@ -10,11 +10,6 @@ using Random = System.Random;
 
 public class ResourceController : MonoBehaviour
 {
-    /* Each Hex needs to provide some resources
-     * The Total Resources can be stored in a dictionary (in the Resource Controller)
-     * The Resources given each tick (each month) can also be stored in a dictionary
-     */
-
     private static ResourceController _instance;
     public static ResourceController Instance
     {
@@ -28,30 +23,60 @@ public class ResourceController : MonoBehaviour
 
     public Action<Hex> OnHexResourceTypeChange = null;
 
+    public Dictionary<String, float> Resources { get; protected set; }
+
     [Header("Initialization of Resources")]
     [SerializeField]
     private HexResourceData[] hexResourceTypes;
+    [Header("Resource Update Ticks")]
+    [SerializeField]
+    private float TimePerTick = 10f; //in seconds
 
-    public Dictionary<String, float> Resources { get; protected set; }
 
     private Random rand = new Random(); // TODO: Allow user to specify a seed
+    private Timer MonthlyTickTimer = null;
 
     private void Awake()
     {
         Resources = new Dictionary<string, float>();
     }
-
     private void Start()
     {
         AssignResources();
+        MonthlyTickTimer = new Timer(TimePerTick, null, UpdateAllHexResources);
+    }
+
+    private void UpdateAllHexResources()
+    {
+
+        for (int i = 0; i < HexMapController.Instance.AllHexes.Length; i++)
+        {
+            Hex hex = HexMapController.Instance.AllHexes[i];
+            hex.UpdateResources();
+        }
+        // For now, we just want to create a string describing all of the resources and log it to the console
+        String s = "";
+        foreach (String resource in Resources.Keys)
+        {
+            s += resource;
+            s += ": ";
+            s += Resources[resource].ToString();
+            s += "\n";
+        }
+        Debug.Log(s);
+
+        MonthlyTickTimer.Reset();
     }
 
     private void AssignResources()
     {
-        foreach (Hex hex in HexMapController.Instance.hexGameObjectMap.Keys)
+        for (int i = 0; i < HexMapController.Instance.AllHexes.Length; i++)
         {
+            Hex hex = HexMapController.Instance.AllHexes[i];
             hex.HexResourceData = hexResourceTypes[Mathf.FloorToInt((float)rand.NextDouble() * hexResourceTypes.Length)];
+
         }
+
     }
 
     #region Utility Methods

@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -37,7 +38,13 @@ public class HexMapController : MonoBehaviour
         }
     }
 
-
+    public Hex[] AllHexes
+    {
+        get
+        {
+            return hexGameObjectMap.Keys.ToArray<Hex>();
+        }
+    }
 
 
     [Header("Hex Grid Properties")]
