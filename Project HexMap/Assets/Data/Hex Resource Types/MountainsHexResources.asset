@@ -9,13 +9,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333cb69defa570045b2935d215bae18a, type: 3}
-  m_Name: GrasslandHexResources
+  m_Name: MountainsHexResources
   m_EditorClassIdentifier: 
   HexResourcesPerMonth:
-  - Resource: Grass
-    AmountPerMonth: 50
-  - Resource: Herbs
-    AmountPerMonth: 5
-  - Resource: Dirt
+  - Resource: Wood
     AmountPerMonth: 12
-  color: {r: 0.40860283, g: 0.66176474, b: 0.26275954, a: 1}
+  - Resource: Snow
+    AmountPerMonth: 8
+  - Resource: Goats
+    AmountPerMonth: 15
+  - Resource: Sheep
+    AmountPerMonth: 15
+  color: {r: 0.375, g: 1, b: 0.76724136, a: 0}
