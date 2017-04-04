@@ -46,6 +46,8 @@ public class HexMapController : MonoBehaviour
         }
     }
 
+    public Hex[,] HexMap { get; protected set; }
+
 
     [Header("Hex Grid Properties")]
 
@@ -80,6 +82,8 @@ public class HexMapController : MonoBehaviour
     private void Awake()
     {
         hexGameObjectMap = new BidirectionalDictionary<Hex, GameObject>();
+        // TODO: Add padding to the width and the height for generating the graph
+        HexMap = new Hex[width, height]; 
         // HACK to ensure that this runs before the Resource Controller, which relies on this
         CreateHexGrid();
         RecalculateMainCameraPosition();
@@ -106,7 +110,8 @@ public class HexMapController : MonoBehaviour
     /// </summary>
     private void CreateHexGrid()
     {
-        for (int j = 0; j < height; j++)
+        // FIXME: Use cube coordinates!
+        for (int j = 0; j < height ; j++)
         {
             for (int i = 0; i < width; i++)
             {
@@ -114,10 +119,10 @@ public class HexMapController : MonoBehaviour
                      i * hexDiameter * xScale + ((j % 2 == 1) ? hexDiameter * xScale / 2 : 0),
                      0,
                      j * hexDiameter * zScale);
-                Hex hex = new Hex(pos);
+                Hex hex = new Hex(pos, i, j);
                 GameObject hexGo = HexMapDisplay.Instance.CreateHex(hex, i, j);
                 hexGameObjectMap.Add(hex, hexGo);
-
+                HexMap[i, j] = hex;
             }
         }
     }
@@ -154,6 +159,13 @@ public class HexMapController : MonoBehaviour
         if (hexGameObjectMap.ContainsValue(obj) == false)
             return null; // ALERT: This does not throw an error
         return hexGameObjectMap[obj];
+    }
+
+    public Hex GetHex(int x, int y)
+    {
+        if (x >= width || x < 0 || y >= height || y < 0)
+            return null;
+        return HexMap[x, y];
     }
     #endregion
 }

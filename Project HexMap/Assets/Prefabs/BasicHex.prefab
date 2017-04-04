@@ -36,7 +36,6 @@ GameObject:
   - component: {fileID: 4511650974162854}
   - component: {fileID: 33911719787296902}
   - component: {fileID: 23111992169303814}
-  - component: {fileID: 95433733502183718}
   m_Layer: 0
   m_Name: BasicHexGFX
   m_TagString: Untagged
@@ -101,6 +100,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33911719787296902
 MeshFilter:
@@ -109,20 +109,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1186215929429166}
   m_Mesh: {fileID: 4300000, guid: 56a81f5dad8711e4fa51ad0e6efd7c2b, type: 3}
---- !u!95 &95433733502183718
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1186215929429166}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 56a81f5dad8711e4fa51ad0e6efd7c2b, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
