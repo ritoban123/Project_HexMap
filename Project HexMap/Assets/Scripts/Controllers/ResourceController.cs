@@ -49,10 +49,10 @@ public class ResourceController : MonoBehaviour
     private void UpdateAllHexResources()
     {
 
-        for (int i = 0; i < HexMapController.Instance.AllHexes.Length; i++)
+        foreach (Hex hex in HexMapController.Instance.World.HexMap)
         {
-            Hex hex = HexMapController.Instance.AllHexes[i];
             hex.UpdateResources();
+
         }
         // For now, we just want to create a string describing all of the resources and log it to the console
         String s = "";
@@ -70,9 +70,8 @@ public class ResourceController : MonoBehaviour
 
     private void AssignResources()
     {
-        for (int i = 0; i < HexMapController.Instance.AllHexes.Length; i++)
+        foreach (Hex hex in HexMapController.Instance.World.HexMap)
         {
-            Hex hex = HexMapController.Instance.AllHexes[i];
             hex.HexResourceData = hexResourceTypes[Mathf.FloorToInt((float)rand.NextDouble() * hexResourceTypes.Length)];
 
         }
