@@ -35,6 +35,8 @@ public class Hex
 
     public void UpdateResources()
     {
+        if (hexResourceData == null)
+            return;
         for (int i = 0; i < hexResourceData.HexResourcesPerMonth.Length; i++)
         {
             ResourceController.Instance.AddResource(

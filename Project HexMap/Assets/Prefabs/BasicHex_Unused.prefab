@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4309343549171922}
   m_Layer: 0
-  m_Name: BasicHex
+  m_Name: BasicHex_Unused
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

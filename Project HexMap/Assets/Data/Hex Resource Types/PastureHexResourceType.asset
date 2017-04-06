@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333cb69defa570045b2935d215bae18a, type: 3}
-  m_Name: GrasslandHexResources
+  m_Name: PastureHexResourceType
   m_EditorClassIdentifier: 
   HexResourcesPerMonth:
-  - Resource: Grass
-    AmountPerMonth: 50
-  - Resource: Herbs
-    AmountPerMonth: 5
-  - Resource: Dirt
+  - Resource: Wool
     AmountPerMonth: 12
-  color: {r: 0.40860283, g: 0.66176474, b: 0.26275954, a: 1}
+  - Resource: Grass
+    AmountPerMonth: 8
+  - Resource: Lumber
+    AmountPerMonth: 1
+  color: {r: 0.38894895, g: 0.8014706, b: 0.3917939, a: 1}

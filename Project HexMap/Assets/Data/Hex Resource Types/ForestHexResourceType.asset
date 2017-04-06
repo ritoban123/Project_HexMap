@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333cb69defa570045b2935d215bae18a, type: 3}
-  m_Name: DesertHexResources
+  m_Name: ForestHexResourceType
   m_EditorClassIdentifier: 
   HexResourcesPerMonth:
-  - Resource: Sand
-    AmountPerMonth: 20
-  - Resource: Cactus
+  - Resource: Lumber
     AmountPerMonth: 12
   - Resource: Game
-    AmountPerMonth: 5
-  color: {r: 0.9632353, g: 0.84835047, b: 0.36829588, a: 0}
+    AmountPerMonth: 8
+  - Resource: Herbs
+    AmountPerMonth: 1
+  color: {r: 0.21950692, g: 0.5147059, b: 0.34369406, a: 1}

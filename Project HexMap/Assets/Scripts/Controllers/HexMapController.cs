@@ -35,19 +35,31 @@ public class HexMapController : MonoBehaviour
     private Vector2 padding = Vector2.one * 0.05f;
     [SerializeField]
     private HexType hexType;
+    [SerializeField] private Material material;
+
+
+    [Header("Hex Mesh Properties")]
+    [SerializeField]
+    private float hexHeight = 0.3f;
+
 
     [Header("Update Properties")]
+    [SerializeField]
     private bool updateEveryFrame;
 
     public BidirectionalDictionary<Hex, GameObject> hexGameObjectMap { get; protected set; }
+    public World World { get; protected set; }
 
+
+    #region Unity Methods
 
     private void Awake()
     {
         hexGameObjectMap = new BidirectionalDictionary<Hex, GameObject>();
-        // HACK to ensure that this runs before the Resource Controller, which relies on this
+        ResourceController.Instance.OnHexResourceTypeChange += OnHexResourceTypeChanged;
         CreateWorld();
     }
+
 
     private void Update()
     {
@@ -62,7 +74,8 @@ public class HexMapController : MonoBehaviour
         }
     }
 
-    public World World { get; protected set; }
+    #endregion
+    #region Creating World
 
     /// <summary>
     /// Creates a grid of hexes based on the values set above
@@ -70,6 +83,7 @@ public class HexMapController : MonoBehaviour
     private void CreateWorld()
     {
         World = new World();
+        hexGameObjectMap.Clear();
         HexMapLayout layout = new HexMapLayout((hexType == HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, hexSize, Vector2.zero);
         for (int q = -mapSize; q <= mapSize; q++)
         {
@@ -80,7 +94,7 @@ public class HexMapController : MonoBehaviour
                 Hex h = new Hex(new HexCoord(q, r), null);
                 World.AddHex(h);
                 GameObject obj = CreateHexGameObject(h, layout);
-                hexGameObjectMap.Add(h, obj);  
+                hexGameObjectMap.Add(h, obj);
             }
         }
 
@@ -90,10 +104,24 @@ public class HexMapController : MonoBehaviour
     {
         GameObject obj = new GameObject("Hex " + h.HexCoord.q + "_" + h.HexCoord.r + "_" + h.HexCoord.s);
         MeshRenderer mr = obj.AddComponent<MeshRenderer>();
+        mr.material = material;
         MeshFilter mf = obj.AddComponent<MeshFilter>();
+
+
+
+        // TODO: Extract this to a separate MeshData Class!
         Mesh mesh = new Mesh();
-        Vector3[] corners =
-            CalculateHexCorners(layout, h, padding)
+        List<Vector3> verts = new List<Vector3>();
+        List<int> tris = new List<int>();
+
+        Vector2[] hexCorners = CalculateHexCorners(layout, padding);
+
+        // Calculate the top base of the hexagonal prisim
+
+        #region Top Face
+
+        Vector3[] cornersTop =
+            hexCorners
             .Select(
                 (corner) =>
                 {
@@ -102,17 +130,65 @@ public class HexMapController : MonoBehaviour
             )
             .ToArray();
 
-        // TODO: Extract this to a separate MeshData Class!
-        List<Vector3> verts = new List<Vector3>(corners);
+        verts.AddRange(cornersTop);
         verts.Add(Vector3.zero);
 
-        List<int> tris = new List<int>();
         for (int i = 0; i < 6; i++)
         {
             tris.Add((i + 1) % 6);
             tris.Add(i);
             tris.Add(6);
         }
+
+        #endregion
+
+        #region Bottom Face
+
+        int offsetAfterTopFace = verts.Count;
+
+        Vector3[] cornersBottom =
+            hexCorners
+            .Select(
+                (corner) =>
+                {
+                    return new Vector3(corner.x, -hexHeight, corner.y);
+                }
+            )
+            .ToArray();
+
+        verts.AddRange(cornersBottom);
+        verts.Add(new Vector3(0, -hexHeight, 0));
+
+        for (int i = 0; i < 6; i++)
+        {
+            tris.Add(i + offsetAfterTopFace);
+            tris.Add((i + 1) % 6 + offsetAfterTopFace);
+            tris.Add(6 + offsetAfterTopFace);
+        }
+
+        #endregion
+
+        #region Lateral Faces
+
+        int offsetAfterBottomFace = verts.Count;
+
+        List<Vector3> topPlusBottomFaces = verts;
+        verts.AddRange(topPlusBottomFaces);
+
+        int offsetAfterFirstLateralFaces = verts.Count;
+
+        verts.AddRange(topPlusBottomFaces);
+
+        for (int i = 0; i < 6; i++)
+        {
+            int offset = (i % 2 == 0) ? offsetAfterBottomFace : offsetAfterFirstLateralFaces;
+            tris.AddRange(new int[] { i + 0 + offset, i + 1 + offset, i + 7 + offset });
+            tris.AddRange(new int[] { i + 1 + offset, i + 8 + offset, i + 7 + offset });
+
+        }
+
+
+        #endregion
 
         mesh.vertices = verts.ToArray();
         mesh.triangles = tris.ToArray();
@@ -136,7 +212,7 @@ public class HexMapController : MonoBehaviour
         return new Vector2(size.x * Mathf.Cos(angle), size.y * Mathf.Sin(angle));
     }
 
-    private Vector2[] CalculateHexCorners(HexMapLayout layout, Hex h, Vector2 padding)
+    private Vector2[] CalculateHexCorners(HexMapLayout layout, Vector2 padding)
     {
         Vector2[] corners = new Vector2[6];
         for (int i = 0; i < 6; i++)
@@ -146,6 +222,22 @@ public class HexMapController : MonoBehaviour
         }
         return corners;
     }
+
+    #endregion
+
+    #region Resources
+
+    /// <summary>
+    /// Callback for the ResourceController.Instance.OnHexResourceTypeChange Action.
+    /// </summary>
+    /// <param name="h">The hex</param>
+    public void OnHexResourceTypeChanged(Hex h)
+    {
+        GameObject obj = hexGameObjectMap[h];
+        obj.GetComponent<MeshRenderer>().material.color = h.HexResourceData.color;
+    }
+    #endregion
+
 
     #region Utility Methods
     public GameObject GetGameObjectForHex(Hex hex)

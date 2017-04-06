@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333cb69defa570045b2935d215bae18a, type: 3}
-  m_Name: ForestHexResources
+  m_Name: HillHexResourceType
   m_EditorClassIdentifier: 
   HexResourcesPerMonth:
-  - Resource: Wood
-    AmountPerMonth: 30
-  - Resource: Water
-    AmountPerMonth: 5
-  - Resource: Herbs
+  - Resource: Brick
     AmountPerMonth: 12
-  color: {r: 0.061634954, g: 0.41911763, b: 0.22681662, a: 1}
+  - Resource: Dirt
+    AmountPerMonth: 8
+  - Resource: Rice
+    AmountPerMonth: 1
+  color: {r: 0.8897059, g: 0.5107237, b: 0.34018174, a: 1}

@@ -48,8 +48,9 @@ public class ResourceController : MonoBehaviour
 
     private void UpdateAllHexResources()
     {
-
-        foreach (Hex hex in HexMapController.Instance.World.HexMap)
+        // FIXME: SUPER INEFFICIANT FOR GARBAGE COLLECTION! AND UGLY
+        // TODO: Setup with Temporary "Resources Collected Per Month" Dictionary which will be updated based on the OnHexResourceTypeChange Callback
+        foreach (Hex hex in HexMapController.Instance.World.HexMap.Values)
         {
             hex.UpdateResources();
 
@@ -70,7 +71,9 @@ public class ResourceController : MonoBehaviour
 
     private void AssignResources()
     {
-        foreach (Hex hex in HexMapController.Instance.World.HexMap)
+        // FIXME: SUPER INEFFICIANT FOR GARBAGE COLLECTION! AND UGLY
+
+        foreach (Hex hex in HexMapController.Instance.World.HexMap.Values)
         {
             hex.HexResourceData = hexResourceTypes[Mathf.FloorToInt((float)rand.NextDouble() * hexResourceTypes.Length)];
 

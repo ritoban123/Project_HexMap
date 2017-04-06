@@ -9,21 +9,21 @@ using UnityEngine;
 
 public class World
 {
-    public HashSet<Hex> HexMap { get; protected set; }
+    public Dictionary<HexCoord, Hex> HexMap { get; protected set; }
     
     public World()
     {
-        HexMap = new HashSet<Hex>();
+        HexMap = new Dictionary<HexCoord, Hex>();
     }
 
     public void AddHex(Hex hex)
     {
-        HexMap.Add(hex);
+        HexMap.Add(hex.HexCoord, hex);
     }
 
     public void RemoveHex(Hex hex)
     {
-        HexMap.Add(hex);
+        HexMap.Remove(hex.HexCoord);
     }
 
 }

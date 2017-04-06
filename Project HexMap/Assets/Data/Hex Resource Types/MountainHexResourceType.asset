@@ -9,15 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333cb69defa570045b2935d215bae18a, type: 3}
-  m_Name: MountainsHexResources
+  m_Name: MountainHexResourceType
   m_EditorClassIdentifier: 
   HexResourcesPerMonth:
-  - Resource: Wood
+  - Resource: Ore
     AmountPerMonth: 12
-  - Resource: Snow
+  - Resource: Rock
     AmountPerMonth: 8
-  - Resource: Goats
-    AmountPerMonth: 15
-  - Resource: Sheep
-    AmountPerMonth: 15
-  color: {r: 0.375, g: 1, b: 0.76724136, a: 0}
+  - Resource: Gem
+    AmountPerMonth: 1
+  color: {r: 0.46323532, g: 0.46323532, b: 0.46323532, a: 1}

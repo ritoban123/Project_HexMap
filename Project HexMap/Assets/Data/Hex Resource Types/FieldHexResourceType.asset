@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 333cb69defa570045b2935d215bae18a, type: 3}
-  m_Name: FreshwaterHexResources
+  m_Name: FieldHexResourceType
   m_EditorClassIdentifier: 
   HexResourcesPerMonth:
-  - Resource: Fish
+  - Resource: Grain
+    AmountPerMonth: 12
+  - Resource: Mustard
     AmountPerMonth: 8
-  - Resource: Water
-    AmountPerMonth: 20
-  - Resource: Algae
-    AmountPerMonth: 5
-  color: {r: 0.051470578, g: 0.6075051, b: 1, a: 0}
+  - Resource: Sunflowerr
+    AmountPerMonth: 1
+  color: {r: 0.8897059, g: 0.78359085, b: 0.34018168, a: 1}
