@@ -14,8 +14,11 @@ MonoBehaviour:
   HexResourcesPerMonth:
   - Resource: Ore
     AmountPerMonth: 12
+    CollectProbability: 0.8
   - Resource: Rock
     AmountPerMonth: 8
+    CollectProbability: 0.5
   - Resource: Gem
     AmountPerMonth: 1
+    CollectProbability: 0.05
   color: {r: 0.46323532, g: 0.46323532, b: 0.46323532, a: 1}

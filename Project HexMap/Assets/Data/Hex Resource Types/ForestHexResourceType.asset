@@ -14,8 +14,11 @@ MonoBehaviour:
   HexResourcesPerMonth:
   - Resource: Lumber
     AmountPerMonth: 12
+    CollectProbability: 0.8
   - Resource: Game
     AmountPerMonth: 8
+    CollectProbability: 0.5
   - Resource: Herbs
     AmountPerMonth: 1
+    CollectProbability: 0.05
   color: {r: 0.21950692, g: 0.5147059, b: 0.34369406, a: 1}

@@ -136,11 +136,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSize: 8
-  hexSize: {x: 1, y: 1}
-  padding: {x: 0.08, y: 0.08}
+  hexSize: {x: 20, y: 20}
+  padding: {x: 1.6, y: 1.6}
   hexType: 0
   material: {fileID: 2100000, guid: 2895a01b5ae883d4194b23fbbae8ba46, type: 2}
-  hexHeight: 0.3
+  hexHeight: 6
   updateEveryFrame: 0
 --- !u!4 &26436563
 Transform:
@@ -222,6 +222,7 @@ Transform:
   m_Children:
   - {fileID: 26436563}
   - {fileID: 1309285459}
+  - {fileID: 1286896963}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -413,7 +414,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1204066382}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 13.9, z: -19.5}
+  m_LocalPosition: {x: 0, y: 278, z: -390}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -447,6 +448,34 @@ Transform:
   - {fileID: 1002945539}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1286896962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1286896963}
+  m_Layer: 0
+  m_Name: TownController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1286896963
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1286896962}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 849890593}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1309285458
 GameObject:
@@ -494,4 +523,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e5c45e121b7de524d9ec64280c0336da, type: 2}
   - {fileID: 11400000, guid: 8313675076dcbb1449d6ceb2418b9f91, type: 2}
   - {fileID: 11400000, guid: a36919b47060f1b479092d855dffedec, type: 2}
-  TimePerTick: 2
+  TimePerTick: 100

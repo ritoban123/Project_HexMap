@@ -179,14 +179,20 @@ public class HexMapController : MonoBehaviour
 
         verts.AddRange(topPlusBottomFaces);
 
-        for (int i = 0; i < 6; i++)
+        int offset;
+
+        for (int i = 0; i < 5; i++)
         {
-            int offset = (i % 2 == 0) ? offsetAfterBottomFace : offsetAfterFirstLateralFaces;
+            offset = (i % 2 == 0) ? offsetAfterBottomFace : offsetAfterFirstLateralFaces;
             tris.AddRange(new int[] { i + 0 + offset, i + 1 + offset, i + 7 + offset });
             tris.AddRange(new int[] { i + 1 + offset, i + 8 + offset, i + 7 + offset });
 
         }
 
+        // HACK because the modulo operator is wierd
+        offset = offsetAfterFirstLateralFaces;
+        tris.AddRange(new int[] {5 + offset, 0  + offset, 12 + offset });
+        tris.AddRange(new int[] { 0 + offset,  7 + offset, 12 + offset });
 
         #endregion
 

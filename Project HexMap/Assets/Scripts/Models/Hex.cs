@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class Hex 
 {
@@ -33,16 +35,21 @@ public class Hex
 
 
 
-    public void UpdateResources()
+    public void UpdateResources(Random rand)
     {
         if (hexResourceData == null)
             return;
         for (int i = 0; i < hexResourceData.HexResourcesPerMonth.Length; i++)
         {
-            ResourceController.Instance.AddResource(
-                hexResourceData.HexResourcesPerMonth[i].Resource,
-                hexResourceData.HexResourcesPerMonth[i].AmountPerMonth
-                );
+            HexResourceData.HexResource resourceData = HexResourceData.HexResourcesPerMonth[i];
+            float prob = (float)rand.NextDouble();
+            if(prob <= resourceData.CollectProbability)
+                ResourceController.Instance.AddResource(resourceData.Resource, resourceData.AmountPerMonth);
+            else
+            {
+                // Consider giving the user a fraction of what they would usually get?
+                continue;
+            }
         }
     }
 

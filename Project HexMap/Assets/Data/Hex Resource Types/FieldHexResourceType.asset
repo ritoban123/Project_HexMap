@@ -14,8 +14,11 @@ MonoBehaviour:
   HexResourcesPerMonth:
   - Resource: Grain
     AmountPerMonth: 12
+    CollectProbability: 0.8
   - Resource: Mustard
     AmountPerMonth: 8
-  - Resource: Sunflowerr
+    CollectProbability: 0.5
+  - Resource: Sunflower
     AmountPerMonth: 1
+    CollectProbability: 0.05
   color: {r: 0.8897059, g: 0.78359085, b: 0.34018168, a: 1}

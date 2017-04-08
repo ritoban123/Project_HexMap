@@ -52,7 +52,7 @@ public class ResourceController : MonoBehaviour
         // TODO: Setup with Temporary "Resources Collected Per Month" Dictionary which will be updated based on the OnHexResourceTypeChange Callback
         foreach (Hex hex in HexMapController.Instance.World.HexMap.Values)
         {
-            hex.UpdateResources();
+            hex.UpdateResources(rand);
 
         }
         // For now, we just want to create a string describing all of the resources and log it to the console

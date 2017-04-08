@@ -15,6 +15,8 @@ public class HexResourceData : ScriptableObject
     {
         public string Resource;
         public float AmountPerMonth;
+        public float CollectProbability;
+
     }
 
     public HexResource[] HexResourcesPerMonth = new HexResource[2];

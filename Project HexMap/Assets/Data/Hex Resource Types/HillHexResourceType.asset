@@ -14,8 +14,11 @@ MonoBehaviour:
   HexResourcesPerMonth:
   - Resource: Brick
     AmountPerMonth: 12
+    CollectProbability: 0.8
   - Resource: Dirt
     AmountPerMonth: 8
+    CollectProbability: 0.5
   - Resource: Rice
     AmountPerMonth: 1
+    CollectProbability: 0.05
   color: {r: 0.8897059, g: 0.5107237, b: 0.34018174, a: 1}
