@@ -1,37 +1,12 @@
-## Welcome to GitHub Pages
+# Project HexMap
 
-You can use the [editor on GitHub](https://github.com/ritoban123/Project_HexMap/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Welcome to the Project_HexMap wiki!
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+I'm a 7th Grader in Southern California (in the United States of America). Just working on this as a hobby, mostly to see if I can make up something that some of my friends might enjoy. However, I'm open to any ideas you might post (but I have no idea how you would post them; I'm new to github). Also feel free fork off of this project for your own personal projects. 
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ritoban123/Project_HexMap/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+# Concept
+* A Game that takes place on a hex-tile grid (thusly, I named it Project HexMap. But I'm open to better sounding and more creative names as well.)
+* Some kind of resources acquired from each tile (similar to the board game Settlers of Catan)
+* Some kind of village building (similar to banished)
+* Maybe some kind of government management (similar to Urban Empires)
+* Maybe an exploration component (like Civilization)
