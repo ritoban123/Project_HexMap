@@ -155,6 +155,46 @@ Transform:
   m_Father: {fileID: 849890593}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &318897045
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 318897046}
+  - component: {fileID: 318897047}
+  m_Layer: 0
+  m_Name: MouseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &318897046
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 318897045}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1236473572}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &318897047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 318897045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f89971fac6d9e240abc6a1a69b951e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &480826612
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +486,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1002945539}
+  - {fileID: 318897046}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -457,8 +498,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1286896963}
+  - component: {fileID: 1286896964}
   m_Layer: 0
-  m_Name: TownController
+  m_Name: SettlementController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -477,6 +519,17 @@ Transform:
   m_Father: {fileID: 849890593}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1286896964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1286896962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec26a63e63625745ad1af6d93e61b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1309285458
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,4 +576,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e5c45e121b7de524d9ec64280c0336da, type: 2}
   - {fileID: 11400000, guid: 8313675076dcbb1449d6ceb2418b9f91, type: 2}
   - {fileID: 11400000, guid: a36919b47060f1b479092d855dffedec, type: 2}
-  TimePerTick: 100
+  TimePerTick: 1
