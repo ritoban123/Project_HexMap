@@ -11,7 +11,7 @@ using UnityEngine;
 /// <summary>
 /// Represents a Cubic Hex Coordinate (q,r,s) along with functions for checking its equality and calculating distance
 /// </summary>
-public class HexCoord
+public struct HexCoord
 {
 
     public static readonly HexCoord[] HEX_NEIGHBOR_DIRECTIONS = new HexCoord[]{
@@ -19,8 +19,8 @@ public class HexCoord
     new HexCoord(-1, 0, 1), new HexCoord(-1, 1, 0), new HexCoord(0, 1, -1)
 };
 
-    public int q { get; protected set; }
-    public int r { get; protected set; }
+    public int q { get; private set; }
+    public int r { get; private set; }
     public int s { get { return -q - r; } }
 
 
@@ -68,12 +68,12 @@ public class HexCoord
         return base.GetHashCode();
     }
 
-    protected static HexCoord SubtractHexCoords(HexCoord a, HexCoord b)
+    private static HexCoord SubtractHexCoords(HexCoord a, HexCoord b)
     {
         return new HexCoord(a.q + b.q, a.r + b.r, a.s + b.s);
     }
 
-    protected static HexCoord AddHexCoords(HexCoord a, HexCoord b)
+    private static HexCoord AddHexCoords(HexCoord a, HexCoord b)
     {
         return new HexCoord(a.q + b.q, a.r + b.r, a.s + b.s);
     }
@@ -88,7 +88,7 @@ public class HexCoord
         return GetHexCoordLength(SubtractHexCoords(a, b));
     }
 
-    protected HexCoord HexDirection(int direction /* 0 to 5 */)
+    private HexCoord HexDirection(int direction /* 0 to 5 */)
     {
         direction = 6 + (direction % 6) % 6;
         return HEX_NEIGHBOR_DIRECTIONS[direction];

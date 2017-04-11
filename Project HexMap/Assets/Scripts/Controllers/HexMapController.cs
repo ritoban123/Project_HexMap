@@ -42,6 +42,8 @@ public class HexMapController : MonoBehaviour
     [SerializeField]
     private float hexHeight = 0.3f;
 
+    [Header("Collision")]
+    public GameObject collisionQuad;
 
     [Header("Update Properties")]
     [SerializeField]
@@ -58,6 +60,9 @@ public class HexMapController : MonoBehaviour
         hexGameObjectMap = new BidirectionalDictionary<Hex, GameObject>();
         ResourceController.Instance.OnHexResourceTypeChange += OnHexResourceTypeChanged;
         CreateWorld();
+
+        collisionQuad.transform.localScale = new Vector3(mapSize * 4 * (hexSize.x + padding.x), mapSize * 4 * (hexSize.y + padding.y), 1);
+
     }
 
 
@@ -77,6 +82,8 @@ public class HexMapController : MonoBehaviour
     #endregion
     #region Creating World
 
+    public HexMapLayout Layout { get; protected set; }
+
     /// <summary>
     /// Creates a grid of hexes based on the values set above
     /// </summary>
@@ -84,7 +91,7 @@ public class HexMapController : MonoBehaviour
     {
         World = new World();
         hexGameObjectMap.Clear();
-        HexMapLayout layout = new HexMapLayout((hexType == HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, hexSize, Vector2.zero);
+        Layout = new HexMapLayout((hexType == HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, hexSize, Vector2.zero);
         for (int q = -mapSize; q <= mapSize; q++)
         {
             int r1 = Mathf.Max(-mapSize, -q - mapSize);
@@ -93,7 +100,7 @@ public class HexMapController : MonoBehaviour
             {
                 Hex h = new Hex(new HexCoord(q, r), null);
                 World.AddHex(h);
-                GameObject obj = CreateHexGameObject(h, layout);
+                GameObject obj = CreateHexGameObject(h, Layout);
                 hexGameObjectMap.Add(h, obj);
             }
         }
