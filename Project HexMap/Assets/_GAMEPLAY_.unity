@@ -135,9 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d108bc13faca843805f0092c8219ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 8
+  mapSize: 1
   hexSize: {x: 20, y: 20}
-  padding: {x: 1.6, y: 1.6}
+  Padding: {x: 1.6, y: 1.6}
   hexType: 0
   material: {fileID: 2100000, guid: 2895a01b5ae883d4194b23fbbae8ba46, type: 2}
   hexHeight: 6

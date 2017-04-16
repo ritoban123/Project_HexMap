@@ -32,7 +32,7 @@ public class HexMapController : MonoBehaviour
     [SerializeField]
     private Vector2 hexSize = Vector2.one;
     [SerializeField]
-    private Vector2 padding = Vector2.one * 0.05f;
+    private Vector2 Padding = Vector2.one * 0.05f;
     [SerializeField]
     private HexType hexType;
     [SerializeField] private Material material;
@@ -61,7 +61,7 @@ public class HexMapController : MonoBehaviour
         ResourceController.Instance.OnHexResourceTypeChange += OnHexResourceTypeChanged;
         CreateWorld();
 
-        collisionQuad.transform.localScale = new Vector3(mapSize * 4 * (hexSize.x + padding.x), mapSize * 4 * (hexSize.y + padding.y), 1);
+        collisionQuad.transform.localScale = new Vector3(mapSize * 4 * (hexSize.x + Padding.x), mapSize * 4 * (hexSize.y + Padding.y), 1);
 
     }
 
@@ -99,12 +99,66 @@ public class HexMapController : MonoBehaviour
             for (int r = r1; r <= r2; r++)
             {
                 Hex h = new Hex(new HexCoord(q, r), null);
+                CalculateHexCorners(h, Layout);
                 World.AddHex(h);
                 GameObject obj = CreateHexGameObject(h, Layout);
                 hexGameObjectMap.Add(h, obj);
             }
         }
+        Debug.Log(Corners.Keys.Count);
+    }
 
+    protected Dictionary<Vector3, HexCorner> Corners = new Dictionary<Vector3, HexCorner>();
+
+    private void CalculateHexCorners(Hex h, HexMapLayout layout)
+    {
+        HexCorner[] hexCorners = new HexCorner[6];
+        Vector3[] corners =
+            CalculateHexCornerOffsets(layout, Vector2.zero)
+            .Select<Vector2, Vector3>
+            (
+                (offset) =>
+                {
+                    Vector3 center = h.HexCoord.CalculateWorldPosition(layout);
+                    return new Vector3(offset.x + center.x, 0, offset.y + center.z);
+                }
+            )
+           .ToArray();
+        for (int i = 0; i < 6; i++)
+        {
+            if (Corners.ContainsKey(corners[i]))
+            {
+                hexCorners[i] = Corners[corners[i]];
+                Debug.Log("Already in Dictionary");
+            }
+            else
+            {
+                hexCorners[i] = new HexCorner(corners[i]);
+                Corners.Add(corners[i], hexCorners[i]);
+            }
+        }
+        h.Corners = hexCorners;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (Corners == null)
+            return;
+        foreach (HexCorner corner in Corners.Values)
+        {
+            Gizmos.color = new Color(255, 0, 0, 0.5f);
+            Gizmos.DrawSphere(corner.WorldPosition, 3);
+        }
+        //if (World == null)
+        //    return;
+        //foreach (Hex h in World.HexMap.Values)
+        //{
+        //    foreach (HexCorner corner in h.Corners)
+        //    {
+        //        Gizmos.color = new Color(255, 0, 0, 0.5f);
+        //        Gizmos.DrawSphere(corner.WorldPosition, 3);
+        //    }
+        //}
     }
 
     private GameObject CreateHexGameObject(Hex h, HexMapLayout layout)
@@ -121,7 +175,7 @@ public class HexMapController : MonoBehaviour
         List<Vector3> verts = new List<Vector3>();
         List<int> tris = new List<int>();
 
-        Vector2[] hexCorners = CalculateHexCorners(layout, padding);
+        Vector2[] hexCorners = CalculateHexCornerOffsets(layout, Padding);
 
         // Calculate the top base of the hexagonal prisim
 
@@ -198,8 +252,8 @@ public class HexMapController : MonoBehaviour
 
         // HACK because the modulo operator is wierd
         offset = offsetAfterFirstLateralFaces;
-        tris.AddRange(new int[] {5 + offset, 0  + offset, 12 + offset });
-        tris.AddRange(new int[] { 0 + offset,  7 + offset, 12 + offset });
+        tris.AddRange(new int[] { 5 + offset, 0 + offset, 12 + offset });
+        tris.AddRange(new int[] { 0 + offset, 7 + offset, 12 + offset });
 
         #endregion
 
@@ -225,7 +279,7 @@ public class HexMapController : MonoBehaviour
         return new Vector2(size.x * Mathf.Cos(angle), size.y * Mathf.Sin(angle));
     }
 
-    private Vector2[] CalculateHexCorners(HexMapLayout layout, Vector2 padding)
+    private Vector2[] CalculateHexCornerOffsets(HexMapLayout layout, Vector2 padding)
     {
         Vector2[] corners = new Vector2[6];
         for (int i = 0; i < 6; i++)
@@ -269,7 +323,16 @@ public class HexMapController : MonoBehaviour
 
     public Hex GetHex(int q, int r, int s)
     {
-        return null;
+        return World.GetHex(q, r, s);
+    }
+
+    public Hex GetHex(HexCoord coord)
+    {
+        return World.GetHex(coord);
+    }
+    public bool InRange(HexCoord coord)
+    {
+        return Mathf.Abs(coord.q) <= mapSize && Mathf.Abs(coord.r) <= mapSize && Mathf.Abs(coord.s) <= mapSize;
     }
     #endregion
 }

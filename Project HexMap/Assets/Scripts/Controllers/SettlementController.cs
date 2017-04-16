@@ -57,11 +57,15 @@ public class SettlementController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 1000.0f, MouseCollisionMask))
         {
-            Vector3 hexPos = hit.point.WorldPosToHexCoord(HexMapController.Instance.Layout);
-            //Debug.Log(hexPos);
-            //HexCoord coord = new HexCoord(Mathf.RoundToInt(hexPos.x), Mathf.RoundToInt(hexPos.y), Mathf.RoundToInt(hexPos.z));
-            //GameObject obj = HexMapController.Instance.GetGameObjectForHex(HexMapController.Instance.GetHex(coord.q, coord.r, coord.s));
-            //obj.GetComponent<MeshRenderer>().material.color = Color.red;
+            Vector3 hexPos = HexCoord.WorldPositionToQRS(HexMapController.Instance.Layout, hit.point);
+            HexCoord coord = hexPos.RoundHex();
+            if (HexMapController.Instance.InRange(coord) == false)
+                return; // The mouse is not over a hex
+            Hex h = HexMapController.Instance.GetHex(coord);
+            // TEMPORARY: Just for now. Later, we'll use the HexCorners
+            GameObject obj = HexMapController.Instance.GetGameObjectForHex(h);
+            obj.GetComponent<MeshRenderer>().material.color = Color.red;
+            
         }
     }
 

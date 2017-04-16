@@ -7,11 +7,13 @@ using Random = System.Random;
 public class Hex 
 {
     public HexCoord HexCoord { get; protected set; }
+    public HexCorner[] Corners { get; set; }
     
 
     public Hex(HexCoord hexCoord, HexResourceData hexResourceData)
     {
         HexCoord = hexCoord;
+        
         this.hexResourceData = hexResourceData;
     }
     

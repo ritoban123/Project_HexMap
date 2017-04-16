@@ -32,7 +32,7 @@ public struct HexCoord
         return new Vector3(x + layout.Origin.x, 0, y + layout.Origin.y);
     }
 
-    public Vector3 WorldPositionToQRS(HexMapLayout layout, Vector3 p)
+    public static Vector3 WorldPositionToQRS(HexMapLayout layout, Vector3 p)
     {
         HexOrientation M = layout.Orientation;
         Vector2 pt = new Vector2((p.x - layout.Origin.x) / layout.HexSize.x,
@@ -65,7 +65,7 @@ public struct HexCoord
 
     public override int GetHashCode()
     {
-        return base.GetHashCode();
+        return 17 * q.GetHashCode() + r.GetHashCode();
     }
 
     private static HexCoord SubtractHexCoords(HexCoord a, HexCoord b)
@@ -115,5 +115,14 @@ public struct HexCoord
             throw new ArgumentException("Hex::Hex - Q+R+S not equal to 0");
     }
 
+    #endregion
+
+    #region Overrides
+
+    public override string ToString()
+    {
+        String result = "(" + q + ", " + r + ", " + s + ")";
+        return result;
+    }
     #endregion
 }

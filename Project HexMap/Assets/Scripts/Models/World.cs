@@ -26,4 +26,17 @@ public class World
         HexMap.Remove(hex.HexCoord);
     }
 
+    public Hex GetHex(int q, int r, int s)
+    {
+        return HexMap[new HexCoord(q, r, s)];
+    }
+
+    public Hex GetHex(HexCoord coord)
+    {
+        if(HexMap.ContainsKey(coord) == false)
+        {
+            throw new ArgumentException(coord.ToString() + " was not found in HexMap");
+        }
+        return HexMap[coord];
+    }
 }
