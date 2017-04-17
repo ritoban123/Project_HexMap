@@ -40,4 +40,14 @@ public static class Utils
         }
         return new HexCoord(q, r, s);
     }
+
+    public static float RoundToNearestHalf(this float a)
+    {
+        return a = Mathf.Round(a * 2f) * 0.5f;
+    }
+
+    public static Vector3 RoundToNearestHalf(this Vector3 a)
+    {
+        return new Vector3(a.x.RoundToNearestHalf(), a.y.RoundToNearestHalf(), a.z.RoundToNearestHalf());
+    }
 }

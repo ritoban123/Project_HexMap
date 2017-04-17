@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class HexCorner
 {
     public Vector3 WorldPosition { get; protected set; } 
@@ -15,6 +16,14 @@ public class HexCorner
 
     public static bool operator ==(HexCorner a, HexCorner b)
     {
+        if(object.ReferenceEquals(a, null))
+        {
+            return object.ReferenceEquals(b, null);
+        }
+        if (object.ReferenceEquals(b, null))
+        {
+            return object.ReferenceEquals(a, null);
+        }
         Vector3 diff = a.WorldPosition - b.WorldPosition;
         if (diff.sqrMagnitude <= 0.05)
             return true;

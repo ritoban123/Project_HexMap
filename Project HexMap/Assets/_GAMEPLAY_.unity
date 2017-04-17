@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d108bc13faca843805f0092c8219ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: 1
+  mapSize: 8
   hexSize: {x: 20, y: 20}
   Padding: {x: 1.6, y: 1.6}
   hexType: 0

@@ -79,6 +79,71 @@ public class HexMapController : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Layout = new HexMapLayout((hexType == HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, hexSize, Vector2.zero);
+
+        Vector3[] firstHexes = 
+            CalculateHexCornerOffsets(Layout, Vector2.zero)
+            .Select<Vector2, Vector3>
+            (
+                (offset) =>
+                {
+                    Vector3 center = Vector3.zero;
+                    return new Vector3(offset.x + center.x, 0, offset.y + center.z);
+                }
+            )
+           .ToArray();
+        Vector3[] second =
+            CalculateHexCornerOffsets(Layout, Vector2.zero)
+            .Select<Vector2, Vector3>
+            (
+                (offset) =>
+                {
+                    Vector3 center = new HexCoord(0,1).CalculateWorldPosition(Layout);
+                    return new Vector3(offset.x + center.x, 0, offset.y + center.z);
+                }
+            )
+           .ToArray();
+
+        //Vector3 current = firstHexes[1];
+        //Debug.Log(current.x + "_" + current.y + "_" + current.z);
+        //current = second[3];
+        //Debug.Log(current.x + "_" + current.y + "_" + current.z);
+        //Debug.Log(firstHexes[0] == second[4]);
+
+        //for (int i = 0; i < 6; i++)
+        //{
+        //    Gizmos.color = new Color(1, i / 6f, i / 6f);
+        //    Gizmos.DrawSphere(firstHexes[i], 3f);
+        //    Gizmos.color = new Color(0, i / 6f, i / 6f);
+
+        //    Gizmos.DrawSphere(second[i], 3f);
+        //}
+
+        //if (Corners == null)
+        //    return;
+        //foreach (HexCorner corner in Corners.Values)
+        //{
+        //    Gizmos.color = new Color(255, 0, 0, 0.5f);
+        //    Gizmos.DrawSphere(corner.WorldPosition, 3);
+        //}
+
+
+
+
+        //if (World == null)
+        //    return;
+        //foreach (Hex h in World.HexMap.Values)
+        //{
+        //    foreach (HexCorner corner in h.Corners)
+        //    {
+        //        Gizmos.color = new Color(255, 0, 0, 0.5f);
+        //        Gizmos.DrawSphere(corner.WorldPosition, 3);
+        //    }
+        //}
+    }
+
     #endregion
     #region Creating World
 
@@ -99,18 +164,35 @@ public class HexMapController : MonoBehaviour
             for (int r = r1; r <= r2; r++)
             {
                 Hex h = new Hex(new HexCoord(q, r), null);
-                CalculateHexCorners(h, Layout);
+                SaveInteresctions(h, Layout);
                 World.AddHex(h);
                 GameObject obj = CreateHexGameObject(h, Layout);
                 hexGameObjectMap.Add(h, obj);
             }
         }
-        Debug.Log(Corners.Keys.Count);
+
+    }
+    
+    /// <summary>
+    /// HACK!!!!! I'm rounding to the nearest half to make this work!
+    /// </summary>
+    private class IntersectionCompaerer : IEqualityComparer<Vector3>
+    {
+        bool IEqualityComparer<Vector3>.Equals(Vector3 x, Vector3 y)
+        {
+            return x.RoundToNearestHalf() == y.RoundToNearestHalf();
+        }
+
+        int IEqualityComparer<Vector3>.GetHashCode(Vector3 a)
+        {
+            return a.RoundToNearestHalf().GetHashCode();
+        }
+
     }
 
-    protected Dictionary<Vector3, HexCorner> Corners = new Dictionary<Vector3, HexCorner>();
+    protected Dictionary<Vector3, HexCorner> Corners = new Dictionary<Vector3, HexCorner>(new IntersectionCompaerer());
 
-    private void CalculateHexCorners(Hex h, HexMapLayout layout)
+    private void SaveInteresctions(Hex h, HexMapLayout layout)
     {
         HexCorner[] hexCorners = new HexCorner[6];
         Vector3[] corners =
@@ -129,7 +211,7 @@ public class HexMapController : MonoBehaviour
             if (Corners.ContainsKey(corners[i]))
             {
                 hexCorners[i] = Corners[corners[i]];
-                Debug.Log("Already in Dictionary");
+                //Debug.Log("Already in Dictionary");
             }
             else
             {
@@ -140,26 +222,6 @@ public class HexMapController : MonoBehaviour
         h.Corners = hexCorners;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (Corners == null)
-            return;
-        foreach (HexCorner corner in Corners.Values)
-        {
-            Gizmos.color = new Color(255, 0, 0, 0.5f);
-            Gizmos.DrawSphere(corner.WorldPosition, 3);
-        }
-        //if (World == null)
-        //    return;
-        //foreach (Hex h in World.HexMap.Values)
-        //{
-        //    foreach (HexCorner corner in h.Corners)
-        //    {
-        //        Gizmos.color = new Color(255, 0, 0, 0.5f);
-        //        Gizmos.DrawSphere(corner.WorldPosition, 3);
-        //    }
-        //}
-    }
 
     private GameObject CreateHexGameObject(Hex h, HexMapLayout layout)
     {

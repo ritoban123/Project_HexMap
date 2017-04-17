@@ -47,6 +47,8 @@ public class SettlementController : MonoBehaviour
         MouseManager.Instance.OnMouseMove += OnMouseMove_SettlementPlacement;
     }
 
+    HexCorner closest = null;
+
 
     private void OnMouseMove_SettlementPlacement(MouseMode mode, Vector2 delta)
     {
@@ -62,11 +64,31 @@ public class SettlementController : MonoBehaviour
             if (HexMapController.Instance.InRange(coord) == false)
                 return; // The mouse is not over a hex
             Hex h = HexMapController.Instance.GetHex(coord);
-            // TEMPORARY: Just for now. Later, we'll use the HexCorners
-            GameObject obj = HexMapController.Instance.GetGameObjectForHex(h);
-            obj.GetComponent<MeshRenderer>().material.color = Color.red;
-            
+            HexCorner[] corners = h.Corners;
+
+            closest = null;
+            float bestSqrDist = Mathf.Infinity;
+
+            for (int i = 0; i < corners.Length; i++)
+            {
+                float sqrDist = Vector3.SqrMagnitude(hit.point - corners[i].WorldPosition);
+                if (sqrDist <= bestSqrDist || closest == null)
+                {
+                    closest = corners[i];
+                    bestSqrDist = sqrDist;
+                }
+            }
+
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (closest == null)
+            return;
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(closest.WorldPosition, 3f);
+
     }
 
 
