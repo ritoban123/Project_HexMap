@@ -7,6 +7,8 @@ public enum MouseMode { Normal, SettlementPlacement }
 
 public class MouseManager : MonoBehaviour
 {
+    public float MouseMoveSensitivity = 0.01f;
+
     private static MouseManager _instance;
     public static MouseManager Instance
     {
@@ -48,7 +50,7 @@ public class MouseManager : MonoBehaviour
     {
         // Calculate Mouse Delta based off previous OnMouseMove call. Theoretically, the player can move the mouse
         // as far as he/she/it wants without triggering the callback if he/she/it moves the mouse slowly enough
-        if (Mathf.Abs(Input.GetAxis("Mouse X")) > 0.1 || Mathf.Abs(Input.GetAxis("Mouse Y")) > 0.1)
+        if (Mathf.Abs(Input.GetAxis("Mouse X")) > 0.1 || Mathf.Abs(Input.GetAxis("Mouse Y")) > MouseMoveSensitivity)
         {
             if (OnMouseMove != null)
                 OnMouseMove.Invoke(MouseMode, new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));

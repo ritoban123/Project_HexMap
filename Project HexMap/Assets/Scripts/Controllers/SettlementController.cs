@@ -86,8 +86,8 @@ public class SettlementController : MonoBehaviour
     {
         if (closest == null)
             return;
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(closest.WorldPosition, 3f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(closest.WorldPosition, 8f);
 
     }
 
