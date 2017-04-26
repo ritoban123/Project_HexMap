@@ -27,7 +27,6 @@ public class MouseManager : MonoBehaviour
             return Input.mousePosition;
         }
     }
-
     public Vector3 MousePosition3
     {
         get
@@ -36,7 +35,27 @@ public class MouseManager : MonoBehaviour
         }
     }
 
-    public MouseMode MouseMode { get; protected set; }
+    public MouseMode MouseMode
+    {
+        get
+        {
+            return mouseMode;
+        }
+
+        set
+        {
+            mouseMode = value;
+            if (OnMouseModeChanged != null)
+                OnMouseModeChanged.Invoke();
+        }
+    }
+
+    private MouseMode mouseMode;
+
+    /// <summary>
+    /// THIS IS ONLY FOR THE UI
+    /// </summary>
+    /// <param name="mode"></param>
     public void SetMouseMode(int mode)
     {
         MouseMode = (MouseMode)mode;
@@ -45,6 +64,13 @@ public class MouseManager : MonoBehaviour
     
 
     public event Action<MouseMode, Vector2> OnMouseMove;
+    public event Action OnMouseModeChanged;
+
+    private void Start()
+    {
+        // ALERT: This could cause problems later on. We may not always want  to unlock the mouse when the mode changes.
+        OnMouseModeChanged += UnlockMouse;
+    }
 
     private void Update()
     {
@@ -55,6 +81,20 @@ public class MouseManager : MonoBehaviour
             if (OnMouseMove != null)
                 OnMouseMove.Invoke(MouseMode, new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
         }
+    }
+
+    public void HideMouse()
+    {
+        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+
+    }
+
+    public void UnlockMouse()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 }

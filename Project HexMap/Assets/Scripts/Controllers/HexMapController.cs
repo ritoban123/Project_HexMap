@@ -81,30 +81,30 @@ public class HexMapController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Layout = new HexMapLayout((hexType == HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, hexSize, Vector2.zero);
+        //Layout = new HexMapLayout((hexType == HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, hexSize, Vector2.zero);
 
-        Vector3[] firstHexes = 
-            CalculateHexCornerOffsets(Layout, Vector2.zero)
-            .Select<Vector2, Vector3>
-            (
-                (offset) =>
-                {
-                    Vector3 center = Vector3.zero;
-                    return new Vector3(offset.x + center.x, 0, offset.y + center.z);
-                }
-            )
-           .ToArray();
-        Vector3[] second =
-            CalculateHexCornerOffsets(Layout, Vector2.zero)
-            .Select<Vector2, Vector3>
-            (
-                (offset) =>
-                {
-                    Vector3 center = new HexCoord(0,1).CalculateWorldPosition(Layout);
-                    return new Vector3(offset.x + center.x, 0, offset.y + center.z);
-                }
-            )
-           .ToArray();
+        //Vector3[] firstHexes = 
+        //    CalculateHexCornerOffsets(Layout, Vector2.zero)
+        //    .Select<Vector2, Vector3>
+        //    (
+        //        (offset) =>
+        //        {
+        //            Vector3 center = Vector3.zero;
+        //            return new Vector3(offset.x + center.x, 0, offset.y + center.z);
+        //        }
+        //    )
+        //   .ToArray();
+        //Vector3[] second =
+        //    CalculateHexCornerOffsets(Layout, Vector2.zero)
+        //    .Select<Vector2, Vector3>
+        //    (
+        //        (offset) =>
+        //        {
+        //            Vector3 center = new HexCoord(0,1).CalculateWorldPosition(Layout);
+        //            return new Vector3(offset.x + center.x, 0, offset.y + center.z);
+        //        }
+        //    )
+        //   .ToArray();
 
         //Vector3 current = firstHexes[1];
         //Debug.Log(current.x + "_" + current.y + "_" + current.z);
@@ -171,6 +171,18 @@ public class HexMapController : MonoBehaviour
             }
         }
 
+        // FIXME: This is ungodly
+        GameObject groundGO = 
+            CreateHexGameObject(
+                new Hex(
+                    new HexCoord(0, 0, 0),
+                    null), 
+                new HexMapLayout(
+                    (hexType != HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, 
+                    hexSize * mapSize * Mathf.Sqrt(3) + hexSize * Mathf.Sqrt(3),
+                    Vector2.zero));
+
+        groundGO.transform.position = new Vector3(0, -2f,0);
     }
     
     /// <summary>

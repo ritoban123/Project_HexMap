@@ -40,15 +40,25 @@ public class SettlementController : MonoBehaviour
      */
 
 
-    public LayerMask MouseCollisionMask;
+    [SerializeField]
+    private LayerMask mouseCollisionMask;
+    [SerializeField]
+    private GameObject settlementPlaceholderPrefab;
 
     public void Start()
     {
         MouseManager.Instance.OnMouseMove += OnMouseMove_SettlementPlacement;
+        MouseManager.Instance.OnMouseModeChanged += OnMouseModeChanges_SettlementPlacement;
     }
 
-    HexCorner closest = null;
+    private void OnMouseModeChanges_SettlementPlacement()
+    {
+        MouseManager.Instance.HideMouse();
+    }
 
+    protected HexCorner lastClosest = null;
+    protected GameObject settlementPlaceholderGO;
+    protected SettlementPlaceholder settlementPlaceholder;
 
     private void OnMouseMove_SettlementPlacement(MouseMode mode, Vector2 delta)
     {
@@ -57,16 +67,20 @@ public class SettlementController : MonoBehaviour
             return;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 1000.0f, MouseCollisionMask))
+        if (Physics.Raycast(ray, out hit, 1000.0f, mouseCollisionMask))
         {
+            MouseManager.Instance.HideMouse();
             Vector3 hexPos = HexCoord.WorldPositionToQRS(HexMapController.Instance.Layout, hit.point);
             HexCoord coord = hexPos.RoundHex();
             if (HexMapController.Instance.InRange(coord) == false)
+            {
+                MouseManager.Instance.UnlockMouse();
                 return; // The mouse is not over a hex
+            }
             Hex h = HexMapController.Instance.GetHex(coord);
             HexCorner[] corners = h.Corners;
 
-            closest = null;
+            HexCorner closest = null;
             float bestSqrDist = Mathf.Infinity;
 
             for (int i = 0; i < corners.Length; i++)
@@ -79,17 +93,26 @@ public class SettlementController : MonoBehaviour
                 }
             }
 
+            if (closest == null)
+                return; 
+
+            if(lastClosest != closest)
+            {
+                lastClosest = closest;
+                if (settlementPlaceholderGO != null)
+                {
+                    Destroy(settlementPlaceholderGO);
+                    settlementPlaceholder = null;
+                }
+                settlementPlaceholder = new SettlementPlaceholder(closest);
+                settlementPlaceholderGO = Instantiate(settlementPlaceholderPrefab, closest.WorldPosition, Quaternion.identity, this.transform);
+            }
+            
+
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (closest == null)
-            return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(closest.WorldPosition, 8f);
 
     }
+
 
 
 
