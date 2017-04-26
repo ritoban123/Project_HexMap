@@ -26,7 +26,7 @@ public class SettlementController : MonoBehaviour
      *       Destory the old gameobject (if it exists)
      * 
      * On Mouse Clicked, if we're in settlement placement mode - 
-     *   If Hex Cursor is null
+     *   If Hex Corner is null
      *       Make sure the Mouse is displayed
      *       Tell the GameManager to return to normal mode
      *       return;
@@ -44,15 +44,21 @@ public class SettlementController : MonoBehaviour
     private LayerMask mouseCollisionMask;
     [SerializeField]
     private GameObject settlementPlaceholderPrefab;
+    [SerializeField]
+    private GameObject basicSettlementPrefab; // TODO: What about different kinds of base settlements
 
     public void Start()
     {
         MouseManager.Instance.OnMouseMove += OnMouseMove_SettlementPlacement;
         MouseManager.Instance.OnMouseModeChanged += OnMouseModeChanges_SettlementPlacement;
+        MouseManager.Instance.OnLeftMouseReleased += OnLeftMouseReleased_SettlementPlacement;
     }
 
-    private void OnMouseModeChanges_SettlementPlacement()
+    private void OnMouseModeChanges_SettlementPlacement(MouseMode m)
     {
+        if (m != MouseMode.SettlementPlacement)
+            return;
+
         MouseManager.Instance.HideMouse();
     }
 
@@ -69,14 +75,14 @@ public class SettlementController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 1000.0f, mouseCollisionMask))
         {
-            MouseManager.Instance.HideMouse();
             Vector3 hexPos = HexCoord.WorldPositionToQRS(HexMapController.Instance.Layout, hit.point);
             HexCoord coord = hexPos.RoundHex();
             if (HexMapController.Instance.InRange(coord) == false)
             {
-                MouseManager.Instance.UnlockMouse();
+                MouseManager.Instance.UnhideMouse();
                 return; // The mouse is not over a hex
             }
+            MouseManager.Instance.HideMouse();
             Hex h = HexMapController.Instance.GetHex(coord);
             HexCorner[] corners = h.Corners;
 
@@ -94,9 +100,9 @@ public class SettlementController : MonoBehaviour
             }
 
             if (closest == null)
-                return; 
+                return;
 
-            if(lastClosest != closest)
+            if (lastClosest != closest)
             {
                 lastClosest = closest;
                 if (settlementPlaceholderGO != null)
@@ -107,13 +113,36 @@ public class SettlementController : MonoBehaviour
                 settlementPlaceholder = new SettlementPlaceholder(closest);
                 settlementPlaceholderGO = Instantiate(settlementPlaceholderPrefab, closest.WorldPosition, Quaternion.identity, this.transform);
             }
-            
+
 
         }
 
     }
 
+    private void OnLeftMouseReleased_SettlementPlacement(MouseMode mode, Vector2 mousePos)
+    {
+        if (mode != MouseMode.SettlementPlacement)
+            return;
 
+        // No idea how this would happen. As soon as you move you're mouse off of the button, we immediately find the closest hex corner.
+        if (settlementPlaceholder == null)
+        {   
+            MouseManager.Instance.MouseMode = MouseMode.Normal;
+            return;
+        }
+        Settlement settlment = new Settlement(settlementPlaceholder);
+        if(settlment == null)
+        {
+            // TODO: What if the player needs some minimum resources to build a settlment
+            Debug.Log("The settlment creation process did not work");
+            return;
+        }
+        Debug.Log("OnLeftMouseReleased_SettlementPlacement");
+        Instantiate(basicSettlementPrefab, settlementPlaceholder.HexCorner.WorldPosition, Quaternion.identity, this.transform);
+        Destroy(settlementPlaceholderGO);
+        settlementPlaceholder = null;
+        MouseManager.Instance.MouseMode = MouseMode.Normal;
+    }
 
 
 }

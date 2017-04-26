@@ -182,8 +182,10 @@ public class HexMapController : MonoBehaviour
                     hexSize * mapSize * Mathf.Sqrt(3) + hexSize * Mathf.Sqrt(3),
                     Vector2.zero));
 
-        groundGO.transform.position = new Vector3(0, -2f,0);
+        groundGO.transform.position = new Vector3(0, GroundHeight, 0);
     }
+
+    public float GroundHeight = -2f;
     
     /// <summary>
     /// HACK!!!!! I'm rounding to the nearest half to make this work!

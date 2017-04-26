@@ -143,6 +143,7 @@ MonoBehaviour:
   hexHeight: 6
   collisionQuad: {fileID: 1606903776}
   updateEveryFrame: 0
+  GroundHeight: -0.5
 --- !u!4 &26436563
 Transform:
   m_ObjectHideFlags: 0
@@ -196,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f89971fac6d9e240abc6a1a69b951e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MouseMoveSensitivity: 0.01
+  MouseMoveSensitivity: 0.05
 --- !u!1 &347293237
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,7 +655,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1204066382}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
@@ -734,6 +735,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   settlementPlaceholderPrefab: {fileID: 1714605310398586, guid: df73ab2a12e069e4ab77532121209cbf,
+    type: 2}
+  basicSettlementPrefab: {fileID: 1541877847373368, guid: f66ee5865db1493488bbae79e27a45c6,
     type: 2}
 --- !u!1 &1309285458
 GameObject:
@@ -1043,5 +1046,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 1204066386}
   MovementSpeed: 100
+  KeyboardSensitivity: 3
   ZoomSpeed: 10000
   EdgeBuffer: 29

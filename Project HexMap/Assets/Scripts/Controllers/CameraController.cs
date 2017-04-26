@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -28,15 +29,19 @@ public class CameraController : MonoBehaviour
 
         // ALERT: Not using MouseMove callback because this should be called even though the mouse doesn't move 
 
-        Vector2 mousePos = MouseManager.Instance.MousePosition;
-        if (mousePos.x < EdgeBuffer)
-            Camera.transform.Translate(Vector3.left * MovementSpeed * Time.deltaTime, Space.World);
-        if (mousePos.y < EdgeBuffer)
-            Camera.transform.Translate(Vector3.back * MovementSpeed * Time.deltaTime, Space.World);
-        if (mousePos.y > Screen.height - EdgeBuffer)
-            Camera.transform.Translate(Vector3.forward * MovementSpeed * Time.deltaTime, Space.World);
-        if (mousePos.x > Screen.width - EdgeBuffer)
-            Camera.transform.Translate(Vector3.right * MovementSpeed * Time.deltaTime, Space.World);
+        if (MouseManager.Instance.MouseMode == MouseMode.Normal && EventSystem.current.IsPointerOverGameObject() == false)
+        {
+
+            Vector2 mousePos = MouseManager.Instance.MousePosition;
+            if (mousePos.x < EdgeBuffer)
+                Camera.transform.Translate(Vector3.left * MovementSpeed * Time.deltaTime, Space.World);
+            if (mousePos.y < EdgeBuffer)
+                Camera.transform.Translate(Vector3.back * MovementSpeed * Time.deltaTime, Space.World);
+            if (mousePos.y > Screen.height - EdgeBuffer)
+                Camera.transform.Translate(Vector3.forward * MovementSpeed * Time.deltaTime, Space.World);
+            if (mousePos.x > Screen.width - EdgeBuffer)
+                Camera.transform.Translate(Vector3.right * MovementSpeed * Time.deltaTime, Space.World);
+        }
     }
 
 }
