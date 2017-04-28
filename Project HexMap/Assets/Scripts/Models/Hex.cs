@@ -8,13 +8,13 @@ public class Hex
 {
     public HexCoord HexCoord { get; protected set; }
     public HexCorner[] Corners { get; set; }
+    public World World;
     
 
-    public Hex(HexCoord hexCoord, HexResourceData hexResourceData)
+    public Hex(HexCoord hexCoord, World world)
     {
         HexCoord = hexCoord;
-        
-        this.hexResourceData = hexResourceData;
+        World = world;
     }
     
     #region Resource 

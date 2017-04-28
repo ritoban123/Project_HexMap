@@ -123,25 +123,29 @@ public class SettlementController : MonoBehaviour
     {
         if (mode != MouseMode.SettlementPlacement)
             return;
-
+        MouseManager.Instance.MouseMode = MouseMode.Normal;
         // No idea how this would happen. As soon as you move you're mouse off of the button, we immediately find the closest hex corner.
         if (settlementPlaceholder == null)
-        {   
+        {
             MouseManager.Instance.MouseMode = MouseMode.Normal;
             return;
         }
+        Destroy(settlementPlaceholderGO);
+        if (settlementPlaceholder.IsPositionValid(HexMapController.Instance.World) == false)
+        {
+            Debug.Log("This is not a valid settlement position");
+            return;
+        }
         Settlement settlment = new Settlement(settlementPlaceholder);
-        if(settlment == null)
+        if (settlment == null)
         {
             // TODO: What if the player needs some minimum resources to build a settlment
             Debug.Log("The settlment creation process did not work");
             return;
-        }
-        Debug.Log("OnLeftMouseReleased_SettlementPlacement");
+        }        //Debug.Log("OnLeftMouseReleased_SettlementPlacement");
+        HexMapController.Instance.World.AddSettlement(settlment);
         Instantiate(basicSettlementPrefab, settlementPlaceholder.HexCorner.WorldPosition, Quaternion.identity, this.transform);
-        Destroy(settlementPlaceholderGO);
         settlementPlaceholder = null;
-        MouseManager.Instance.MouseMode = MouseMode.Normal;
     }
 
 

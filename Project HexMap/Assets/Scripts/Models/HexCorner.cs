@@ -6,17 +6,24 @@ using UnityEngine;
 
 public class HexCorner
 {
-    public Vector3 WorldPosition { get; protected set; } 
-    // TODO: Add in neighboring hexes
+    public Vector3 WorldPosition { get; protected set; }
+    public HashSet<Hex> Neighbors { get; protected set; }
 
     public HexCorner(Vector3 pos)
     {
         WorldPosition = pos;
+        Neighbors = new HashSet<Hex>();
+    }
+
+    public void AddNeighbor(Hex h)
+    {
+        if (Neighbors.Contains(h) == false)
+            Neighbors.Add(h);
     }
 
     public static bool operator ==(HexCorner a, HexCorner b)
     {
-        if(object.ReferenceEquals(a, null))
+        if (object.ReferenceEquals(a, null))
         {
             return object.ReferenceEquals(b, null);
         }
@@ -30,6 +37,8 @@ public class HexCorner
         else
             return false;
     }
+
+
 
     public static bool operator !=(HexCorner a, HexCorner b)
     {

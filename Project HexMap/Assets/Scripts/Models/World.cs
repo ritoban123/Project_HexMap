@@ -10,11 +10,15 @@ using UnityEngine;
 public class World
 {
     public Dictionary<HexCoord, Hex> HexMap { get; protected set; }
+    public Dictionary<HexCorner, Settlement> Settlements { get; protected set; }
     
     public World()
     {
         HexMap = new Dictionary<HexCoord, Hex>();
+        Settlements = new Dictionary<HexCorner, Settlement>();
     }
+
+    #region Dictionary Helper Methods
 
     public void AddHex(Hex hex)
     {
@@ -39,4 +43,27 @@ public class World
         }
         return HexMap[coord];
     }
+
+
+    public void AddSettlement(Settlement s)
+    {
+        Settlements.Add(s.HexCorner, s);
+    }
+
+    public void RemoveSettlement(Settlement s)
+    {
+        Settlements.Remove(s.HexCorner);
+    }
+
+
+    public Settlement GetSettlement(HexCorner corner)
+    {
+        if (Settlements.ContainsKey(corner) == false)
+        {
+            throw new ArgumentException(corner.ToString() + " was not found in HexMap");
+        }
+        return Settlements[corner];
+    }
+
+    #endregion Dictionary Helper Methods
 }

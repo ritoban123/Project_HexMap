@@ -143,7 +143,7 @@ MonoBehaviour:
   hexHeight: 6
   collisionQuad: {fileID: 1606903776}
   updateEveryFrame: 0
-  GroundHeight: -0.5
+  GroundHeight: -1
 --- !u!4 &26436563
 Transform:
   m_ObjectHideFlags: 0
@@ -655,7 +655,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1204066382}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 

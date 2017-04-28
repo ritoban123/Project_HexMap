@@ -2,12 +2,10 @@
 (c) 2017 Ritoban Roy-Chowdhury. All rights reserved 
  */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = System.Random;
 
 public class HexMapController : MonoBehaviour
 {
@@ -123,10 +121,17 @@ public class HexMapController : MonoBehaviour
 
         //if (Corners == null)
         //    return;
+
         //foreach (HexCorner corner in Corners.Values)
         //{
-        //    Gizmos.color = new Color(255, 0, 0, 0.5f);
+        //    Gizmos.color = new Color(corner.WorldPosition.x, corner.WorldPosition.y, corner.WorldPosition.z);
         //    Gizmos.DrawSphere(corner.WorldPosition, 3);
+
+        //    foreach (Hex h in corner.Neighbors)
+        //    {
+
+        //        Gizmos.DrawSphere(h.HexCoord.CalculateWorldPosition(Layout), 3);
+        //    }
         //}
 
 
@@ -142,6 +147,9 @@ public class HexMapController : MonoBehaviour
         //        Gizmos.DrawSphere(corner.WorldPosition, 3);
         //    }
         //}
+
+
+
     }
 
     #endregion
@@ -163,7 +171,7 @@ public class HexMapController : MonoBehaviour
             int r2 = Mathf.Min(mapSize, -q + mapSize);
             for (int r = r1; r <= r2; r++)
             {
-                Hex h = new Hex(new HexCoord(q, r), null);
+                Hex h = new Hex(new HexCoord(q, r), World);
                 SaveInteresctions(h, Layout);
                 World.AddHex(h);
                 GameObject obj = CreateHexGameObject(h, Layout);
@@ -172,13 +180,13 @@ public class HexMapController : MonoBehaviour
         }
 
         // FIXME: This is ungodly
-        GameObject groundGO = 
+        GameObject groundGO =
             CreateHexGameObject(
                 new Hex(
                     new HexCoord(0, 0, 0),
-                    null), 
+                    World),
                 new HexMapLayout(
-                    (hexType != HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped, 
+                    (hexType != HexType.Flat) ? HexOrientation.FlatTopped : HexOrientation.PointyTopped,
                     hexSize * mapSize * Mathf.Sqrt(3) + hexSize * Mathf.Sqrt(3),
                     Vector2.zero));
 
@@ -186,7 +194,7 @@ public class HexMapController : MonoBehaviour
     }
 
     public float GroundHeight = -2f;
-    
+
     /// <summary>
     /// HACK!!!!! I'm rounding to the nearest half to make this work!
     /// </summary>
@@ -225,12 +233,14 @@ public class HexMapController : MonoBehaviour
             if (Corners.ContainsKey(corners[i]))
             {
                 hexCorners[i] = Corners[corners[i]];
+                hexCorners[i].AddNeighbor(h);
                 //Debug.Log("Already in Dictionary");
             }
             else
             {
                 hexCorners[i] = new HexCorner(corners[i]);
                 Corners.Add(corners[i], hexCorners[i]);
+                hexCorners[i].AddNeighbor(h);
             }
         }
         h.Corners = hexCorners;
