@@ -43,40 +43,15 @@ public class ResourceController : MonoBehaviour
     private void Start()
     {
         AssignResources();
-        MonthlyTickTimer = new Timer(TimePerTick, null, UpdateAllHexResources);
+        MonthlyTickTimer = new Timer(TimePerTick, null, null);
     }
-
-    private void UpdateAllHexResources()
-    {
-        // FIXME: SUPER INEFFICIANT FOR GARBAGE COLLECTION! AND UGLY
-        // TODO: Setup with Temporary "Resources Collected Per Month" Dictionary which will be updated based on the OnHexResourceTypeChange Callback
-        foreach (Hex hex in HexMapController.Instance.World.HexMap.Values)
-        {
-            hex.UpdateResources(rand);
-
-        }
-        // For now, we just want to create a string describing all of the resources and log it to the console
-        String s = "";
-        foreach (String resource in Resources.Keys)
-        {
-            s += resource;
-            s += ": ";
-            s += Resources[resource].ToString();
-            s += "\n";
-        }
-        Debug.Log(s);
-
-        MonthlyTickTimer.Reset();
-    }
-
     private void AssignResources()
     {
         // FIXME: SUPER INEFFICIANT FOR GARBAGE COLLECTION! AND UGLY
 
         foreach (Hex hex in HexMapController.Instance.World.HexMap.Values)
         {
-            hex.HexResourceData = hexResourceTypes[Mathf.FloorToInt((float)rand.NextDouble() * hexResourceTypes.Length)];
-
+            hex.HexResourceData = hexResourceTypes[rand.Next(0,hexResourceTypes.Length)];
         }
 
     }

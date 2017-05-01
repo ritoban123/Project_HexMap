@@ -37,7 +37,7 @@ public class Hex
 
 
 
-    public void UpdateResources(Random rand)
+    public void CalculateResources(Random rand)
     {
         if (hexResourceData == null)
             return;
