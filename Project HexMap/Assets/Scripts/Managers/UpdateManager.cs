@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpdateManager : MonoBehaviour 
+public class UpdateManager : MonoBehaviour
 {
     private static UpdateManager _instance;
     public static UpdateManager Instance
@@ -20,11 +20,22 @@ public class UpdateManager : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private float MonthTime = 15f;
+
     public event Action<float> OnUpdate;
-	
-	private void Update () 
-	{
+    public event Action OnMonthTick;
+
+    private Timer monthTimer;
+
+    private void Awake()
+    {
+        monthTimer = new Timer(MonthTime, null, () => { monthTimer.Reset(); OnMonthTick(); });
+    }
+
+    private void Update()
+    {
         if (OnUpdate != null)
             OnUpdate.Invoke(Time.deltaTime);
-	}
+    }
 }

@@ -1,6 +1,6 @@
 ﻿/* ResourceController.cs  
 (c) 2017 Ritoban Roy-Chowdhury. All rights reserved 
- */
+*/
 
 using System;
 using System.Collections;
@@ -23,35 +23,40 @@ public class ResourceController : MonoBehaviour
 
     public Action<Hex> OnHexResourceTypeChange = null;
 
-    public Dictionary<String, float> Resources { get; protected set; }
+    public World World
+    {
+        get
+        {
+            return HexMapController.Instance.World;
+        }
+    }
 
     [Header("Initialization of Resources")]
     [SerializeField]
     private HexResourceData[] hexResourceTypes;
-    [Header("Resource Update Ticks")]
-    [SerializeField]
-    private float TimePerTick = 10f; //in seconds
 
 
-    private Random rand = new Random(); // TODO: Allow user to specify a seed
-    private Timer MonthlyTickTimer = null;
 
-    private void Awake()
-    {
-        Resources = new Dictionary<string, float>();
-    }
+
+
     private void Start()
     {
         AssignResources();
-        MonthlyTickTimer = new Timer(TimePerTick, null, null);
+        UpdateManager.Instance.OnMonthTick += UpdateMonthlyResources;
     }
+
+    private void UpdateMonthlyResources()
+    {
+        // Start off by going through each settlement and giving it its neighboring hexes the appropriate resources.
+        World.ForEachSettlment((s) => { Debug.Log("Month!"); s.CollectResources(RandomManager.Instance); });
+    }
+
     private void AssignResources()
     {
         // FIXME: SUPER INEFFICIANT FOR GARBAGE COLLECTION! AND UGLY
-
-        foreach (Hex hex in HexMapController.Instance.World.HexMap.Values)
+        foreach (Hex hex in World.HexMap.Values)
         {
-            hex.HexResourceData = hexResourceTypes[rand.Next(0,hexResourceTypes.Length)];
+            hex.HexResourceData = hexResourceTypes[RandomManager.Instance.rand.Next(0, hexResourceTypes.Length)];
         }
 
     }
@@ -60,40 +65,40 @@ public class ResourceController : MonoBehaviour
 
     public void AddResource(string resource, float amount)
     {
-        if (Resources.ContainsKey(resource))
+        if (World.Resources.ContainsKey(resource))
         {
-            Resources[resource] += amount;
+            World.Resources[resource] += amount;
         }
         else
         {
-            Resources.Add(resource, amount);
+            World.Resources.Add(resource, amount);
         }
     }
 
     public float GetResource(string resource)
     {
-        if (Resources.ContainsKey(resource))
+        if (World.Resources.ContainsKey(resource))
         {
-            return Resources[resource];
+            return World.Resources[resource];
         }
-        Resources.Add(resource, 0);
+        World.Resources.Add(resource, 0);
         return 0f;
     }
 
     public bool AttemptSpendResources(string resource, float amount)
     {
-        if (Resources.ContainsKey(resource) == false)
+        if (World.Resources.ContainsKey(resource) == false)
         {
-            Resources.Add(resource, 0);
+            World.Resources.Add(resource, 0);
             return false;
         }
-        else if (Resources[resource] < amount)
+        else if (World.Resources[resource] < amount)
         {
             return false;
         }
         else
         {
-            Resources[resource] -= amount;
+            World.Resources[resource] -= amount;
             return true;
         }
     }

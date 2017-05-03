@@ -51,4 +51,17 @@ public static class Utils
         return new Vector3(a.x.RoundToNearestHalf(), a.y.RoundToNearestHalf(), a.z.RoundToNearestHalf());
     }
 
+    public static string ResourceDictionaryToText(this Dictionary<string, float> resources)
+    {
+        string s = "";
+        foreach (KeyValuePair<string, float> kvp in resources)
+        {
+            s += kvp.Key;
+            s += ": ";
+            s += kvp.Value;
+            s += "\n";
+        }
+        return s;
+    }
+
 }

@@ -5,6 +5,17 @@ using UnityEngine;
 
 public class SettlementController : MonoBehaviour
 {
+    private static SettlementController _instance;
+    public static SettlementController Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = GameObject.FindObjectOfType<SettlementController>();
+            return _instance;
+        }
+    }
+
     /*
      * The player clicks a button in the UI, which tells a GameManager that we are in settlement placement mode
      * The Mouse Manager has 2 callbacks - OnMouseMoved and OnMouseClicked, both of which take in the current Game Mode
@@ -119,6 +130,8 @@ public class SettlementController : MonoBehaviour
 
     }
 
+    public BidirectionalDictionary<Settlement, GameObject> SettlementGameObjectMap = new BidirectionalDictionary<Settlement, GameObject>();
+
     private void OnLeftMouseReleased_SettlementPlacement(MouseMode mode, Vector2 mousePos)
     {
         if (mode != MouseMode.SettlementPlacement)
@@ -136,15 +149,16 @@ public class SettlementController : MonoBehaviour
             Debug.Log("This is not a valid settlement position");
             return;
         }
-        Settlement settlment = new Settlement(settlementPlaceholder);
-        if (settlment == null)
+        Settlement settlement = new Settlement(settlementPlaceholder);
+        if (settlement == null)
         {
             // TODO: What if the player needs some minimum resources to build a settlment
             Debug.Log("The settlment creation process did not work");
             return;
         }        //Debug.Log("OnLeftMouseReleased_SettlementPlacement");
-        HexMapController.Instance.World.AddSettlement(settlment);
-        Instantiate(basicSettlementPrefab, settlementPlaceholder.HexCorner.WorldPosition, Quaternion.identity, this.transform);
+        HexMapController.Instance.World.AddSettlement(settlement);
+        GameObject GO = Instantiate(basicSettlementPrefab, settlementPlaceholder.HexCorner.WorldPosition, Quaternion.identity, this.transform) as GameObject;
+        SettlementGameObjectMap.Add(settlement, GO);
         settlementPlaceholder = null;
     }
 

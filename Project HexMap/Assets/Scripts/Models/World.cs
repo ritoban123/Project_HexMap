@@ -11,11 +11,15 @@ public class World
 {
     public Dictionary<HexCoord, Hex> HexMap { get; protected set; }
     public Dictionary<HexCorner, Settlement> Settlements { get; protected set; }
-    
+    public Dictionary<String, float> Resources { get; protected set; }
+
+
     public World()
     {
         HexMap = new Dictionary<HexCoord, Hex>();
         Settlements = new Dictionary<HexCorner, Settlement>();
+        Resources = new Dictionary<string, float>();
+
     }
 
     #region Dictionary Helper Methods
@@ -37,7 +41,7 @@ public class World
 
     public Hex GetHex(HexCoord coord)
     {
-        if(HexMap.ContainsKey(coord) == false)
+        if (HexMap.ContainsKey(coord) == false)
         {
             throw new ArgumentException(coord.ToString() + " was not found in HexMap");
         }
@@ -66,4 +70,14 @@ public class World
     }
 
     #endregion Dictionary Helper Methods
+
+    #region Action Helpers
+    public void ForEachSettlment(Action<Settlement> a)
+    {
+        foreach (Settlement s in Settlements.Values)
+        {
+            a.Invoke(s);
+        }
+    }
+    #endregion
 }

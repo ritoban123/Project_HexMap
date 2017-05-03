@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4844742032807992}
   - component: {fileID: 33002875584407974}
   - component: {fileID: 23995566219390152}
-  m_Layer: 0
+  - component: {fileID: 65079637553880978}
+  m_Layer: 9
   m_Name: BasicSettlementGFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +37,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4727992817729374}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BasicSettlement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,3 +110,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1052635182593732}
   m_Mesh: {fileID: 4300000, guid: 76b1664c20ba4864e8a44a143935a63f, type: 3}
+--- !u!65 &65079637553880978
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1052635182593732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.0000005, z: 1.2000003}
+  m_Center: {x: 0, y: 0, z: 0.60000014}

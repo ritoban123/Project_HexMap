@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum MouseMode { Normal, SettlementPlacement }
+public enum MouseMode { Normal, SettlementPlacement, UI }
 
 public class MouseManager : MonoBehaviour
 {
@@ -73,7 +73,7 @@ public class MouseManager : MonoBehaviour
     /// </summary>
     public event Action<MouseMode> OnMouseModeChanged;
     /// <summary>
-    /// Called when the LeftMouseButton is released. Vector
+    /// Called when the LeftMouseButton is released. Vector2 is Mouse Position
     /// </summary>
     public event Action<MouseMode, Vector2> OnLeftMouseReleased;
 
