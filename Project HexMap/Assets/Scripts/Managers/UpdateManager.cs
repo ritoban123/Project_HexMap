@@ -21,16 +21,35 @@ public class UpdateManager : MonoBehaviour
     }
 
     [SerializeField]
-    private float MonthTime = 15f;
+    private float monthTime = 15f;
+
+    public float MonthProgress
+    {
+        get
+        {
+            return monthTimer.TotalTimeElapsed / monthTime;
+        }
+    }
+
+    public int CurrentMonth = 1;
 
     public event Action<float> OnUpdate;
     public event Action OnMonthTick;
+
 
     private Timer monthTimer;
 
     private void Awake()
     {
-        monthTimer = new Timer(MonthTime, null, () => { monthTimer.Reset(); OnMonthTick(); });
+        monthTimer = new Timer(monthTime, null,
+                () => 
+                {
+                    CurrentMonth++;
+                    monthTimer.Reset();
+                    OnMonthTick();
+                }
+            
+            );
     }
 
     private void Update()

@@ -48,7 +48,7 @@ public class ResourceController : MonoBehaviour
     private void UpdateMonthlyResources()
     {
         // Start off by going through each settlement and giving it its neighboring hexes the appropriate resources.
-        World.ForEachSettlment((s) => { Debug.Log("Month!"); s.CollectResources(RandomManager.Instance); });
+        World.ForEachSettlment((s) => { s.CollectResources(RandomManager.Instance); });
     }
 
     private void AssignResources()

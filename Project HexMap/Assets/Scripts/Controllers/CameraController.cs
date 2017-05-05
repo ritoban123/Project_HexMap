@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+
         Camera.transform.Translate(
             Input.GetAxis("Horizontal") * MovementSpeed * KeyboardSensitivity * Time.deltaTime,
             0,
