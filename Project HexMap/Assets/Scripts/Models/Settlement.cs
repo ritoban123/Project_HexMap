@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Settlement
 {
+    public string Name;
+
     public HexCorner HexCorner;
     public Dictionary<string, float> Resources { get; protected set; }
 

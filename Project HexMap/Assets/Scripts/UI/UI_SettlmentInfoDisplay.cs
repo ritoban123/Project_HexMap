@@ -15,6 +15,7 @@ public class UI_SettlmentInfoDisplay : MonoBehaviour
 
     public LayerMask SettlementMask;
     public Text ResourceText;
+    public InputField NameInput;
 
     private void Awake()
     {
@@ -26,8 +27,8 @@ public class UI_SettlmentInfoDisplay : MonoBehaviour
 
     private void OnLeftMouseReleased_EnterUI(MouseMode m, Vector2 pos)
     {
-        if(m != MouseMode.Normal && m != MouseMode.UI)
-        {   
+        if (m != MouseMode.Normal && m != MouseMode.UI)
+        {
             return;
         }
 
@@ -48,8 +49,13 @@ public class UI_SettlmentInfoDisplay : MonoBehaviour
     private void UpdateUI()
     {
         ResourceText.text = selectedSettlement.Resources.ResourceDictionaryToText();
+        if (NameInput.text != selectedSettlement.Name)
+            UpdateSettlementName();
+        else
+            NameInput.text = selectedSettlement.Name;
         gameObject.SetActive(true);
         selectedSettlement.SetClean("Resources");
+
     }
 
     private void Update()
@@ -68,4 +74,10 @@ public class UI_SettlmentInfoDisplay : MonoBehaviour
         gameObject.SetActive(false);
         selectedSettlement = null;
     }
+
+    public void UpdateSettlementName()
+    {
+        selectedSettlement.Name = NameInput.text;
+    }
+
 }
