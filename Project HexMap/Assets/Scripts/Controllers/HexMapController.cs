@@ -100,6 +100,7 @@ public class HexMapController : MonoBehaviour
                 SaveInteresctions(h, Layout);
                 World.AddHex(h);
                 GameObject obj = CreateHexGameObject(h, Layout);
+                
                 hexGameObjectMap.Add(h, obj);
             }
         }
@@ -116,6 +117,7 @@ public class HexMapController : MonoBehaviour
                     Vector2.zero));
 
         groundGO.transform.position = new Vector3(0, GroundHeight, 0);
+        StaticBatchingUtility.Combine(this.transform.gameObject);
     }
 
     public float GroundHeight = -2f;
@@ -279,7 +281,8 @@ public class HexMapController : MonoBehaviour
 
         obj.transform.position = h.HexCoord.CalculateWorldPosition(layout);
         obj.transform.SetParent(this.transform);
-
+        obj.isStatic = true;
+        
         return obj;
     }
 
@@ -312,7 +315,7 @@ public class HexMapController : MonoBehaviour
     public void OnHexResourceTypeChanged(Hex h)
     {
         GameObject obj = hexGameObjectMap[h];
-        obj.GetComponent<MeshRenderer>().material.color = h.HexResourceData.color;
+        obj.GetComponent<MeshRenderer>().sharedMaterial = h.HexResourceData.material;
     }
     #endregion
 

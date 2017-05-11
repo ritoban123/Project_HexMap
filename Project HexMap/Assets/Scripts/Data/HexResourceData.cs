@@ -20,5 +20,5 @@ public class HexResourceData : ScriptableObject
     }
 
     public HexResource[] HexResourcesPerMonth = new HexResource[2];
-    public Color color;
+    public Material material;
 }
